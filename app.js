@@ -31,12 +31,16 @@ if (!isProduction) {
   app.use(errorhandler());
 }
 
-if(isProduction){
-  mongoose.connect(process.env.MONGOLAB_PURPLE_URI);
-} else {
-  mongoose.connect('mongodb://localhost/conduit');
-  mongoose.set('debug', true);
-}
+mongoose.connect(process.env.MONGOLAB_PURPLE_URI);
+mongoose.set('debug', true);
+
+// if(isProduction){
+//   mongoose.connect(process.env.MONGOLAB_PURPLE_URI);
+//   mongoose.set('debug', true);
+// } else {
+//   mongoose.connect('mongodb://localhost/conduit');
+//   mongoose.set('debug', true);
+// }
 
 require('./models/User');
 require('./models/Article');
