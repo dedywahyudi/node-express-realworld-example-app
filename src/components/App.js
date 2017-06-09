@@ -1,8 +1,9 @@
-import Header from './Header';
-import Home from './Home';
-import React from 'react';
 import agent from '../agent';
+import Header from './Header';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { APP_LOAD, REDIRECT } from '../constants/actionTypes';
 
 const mapStateToProps = state => ({
   appLoaded: state.common.appLoaded,
@@ -13,12 +14,19 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   onLoad: (payload, token) =>
-    dispatch({ type: 'APP_LOAD', payload, token }),
+    dispatch({ type: APP_LOAD, payload, token, skipTracking: true }),
   onRedirect: () =>
-    dispatch({ type: 'REDIRECT' })
+    dispatch({ type: REDIRECT })
 });
 
 class App extends React.Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.redirectTo) {
+      this.context.router.replace(nextProps.redirectTo);
+      this.props.onRedirect();
+    }
+  }
+
   componentWillMount() {
     const token = window.localStorage.getItem('jwt');
     if (token) {
@@ -26,13 +34,6 @@ class App extends React.Component {
     }
 
     this.props.onLoad(token ? agent.Auth.current() : null, token);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.redirectTo) {
-      this.context.router.replace(nextProps.redirectTo);
-      this.props.onRedirect();
-    }
   }
 
   render() {
@@ -57,7 +58,7 @@ class App extends React.Component {
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object.isRequired
+  router: PropTypes.object.isRequired
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

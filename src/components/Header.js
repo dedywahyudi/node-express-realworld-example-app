@@ -1,7 +1,5 @@
-'use strict';
-
-import { Link } from 'react-router';
 import React from 'react';
+import { Link } from 'react-router';
 
 const LoggedOutView = props => {
   if (!props.currentUser) {
@@ -38,7 +36,7 @@ const LoggedInView = props => {
       <ul className="nav navbar-nav pull-xs-right">
 
         <li className="nav-item">
-          <Link to="" className="nav-link">
+          <Link to="/" className="nav-link">
             Home
           </Link>
         </li>
@@ -59,7 +57,7 @@ const LoggedInView = props => {
           <Link
             to={`@${props.currentUser.username}`}
             className="nav-link">
-            <img src={props.currentUser.image} className="user-pic" />
+            <img src={props.currentUser.image} className="user-pic" alt={props.currentUser.username} />
             {props.currentUser.username}
           </Link>
         </li>
