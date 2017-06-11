@@ -5,15 +5,31 @@ var jwt = require('jsonwebtoken');
 var secret = require('../config').secret;
 
 var UserSchema = new mongoose.Schema({
-  username: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true},
-  email: {type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true},
+  username: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: [true, "can't be blank"],
+    match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
+    index: true
+  },
+  email: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    required: [true, "can't be blank"],
+    match: [/\S+@\S+\.\S+/, 'is invalid'],
+    index: true
+  },
   bio: String,
   image: String,
   favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Article' }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   hash: String,
   salt: String
-}, {timestamps: true});
+}, {
+  timestamps: true
+});
 
 UserSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
@@ -60,7 +76,6 @@ UserSchema.methods.favorite = function(id){
   if(this.favorites.indexOf(id) === -1){
     this.favorites.push(id);
   }
-
   return this.save();
 };
 
@@ -79,7 +94,6 @@ UserSchema.methods.follow = function(id){
   if(this.following.indexOf(id) === -1){
     this.following.push(id);
   }
-
   return this.save();
 };
 
