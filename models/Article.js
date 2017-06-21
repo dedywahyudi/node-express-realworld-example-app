@@ -7,7 +7,8 @@ var ArticleSchema = new mongoose.Schema({
   slug: {
     type: String,
     lowercase: true,
-    unique: true},
+    unique: true
+  },
     title: String,
     description: String,
     body: String,
@@ -21,7 +22,6 @@ ArticleSchema.plugin(uniqueValidator, {message: 'is already taken'});
 
 ArticleSchema.pre('validate', function(next){
   this.slugify();
-
   next();
 });
 
